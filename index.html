@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>مشهد اللقاء</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: #15152b;
+        }
+
+        .scene {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background:
+                linear-gradient(
+                    to bottom,
+                    #1d2148 0%,
+                    #6e5b92 42%,
+                    #e3a176 72%,
+                    #4b3151 100%
+                );
+        }
+
+        .moon {
+            position: absolute;
+            top: 9%;
+            left: 13%;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #fff4c7;
+            box-shadow: 0 0 45px #fff3ae;
+        }
+
+        .stars {
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle, white 1px, transparent 2px),
+                radial-gradient(circle, #ffd8ee 1px, transparent 2px);
+            background-size: 85px 85px, 125px 125px;
+            opacity: 0.55;
+        }
+
+        .far-trees {
+            position: absolute;
+            bottom: 31%;
+            left: 0;
+            width: 100%;
+            height: 25%;
+            background:
+                linear-gradient(135deg, transparent 40%, #24203c 41% 55%, transparent 56%) 0 0 / 160px 100% repeat-x;
+            opacity: 0.75;
+        }
+
+        .ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 35%;
+            background:
+                linear-gradient(to bottom, #493450, #17172b);
+            transform: perspective(500px) rotateX(14deg);
+            transform-origin: bottom;
+        }
+
+        .path {
+            position: absolute;
+            bottom: -15%;
+            left: 50%;
+            width: 42%;
+            height: 80%;
+            transform: translateX(-50%);
+            background: linear-gradient(to bottom, #73506b, #2b203c);
+            clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%);
+            opacity: 0.85;
+        }
+
+        .camera {
+            position: absolute;
+            inset: 0;
+            transform-origin: center center;
+        }
+
+        .character {
+            position: absolute;
+            bottom: 25%;
+            width: 80px;
+            height: 150px;
+            transform-origin: bottom center;
+        }
+
+        .boy {
+            left: 18%;
+        }
+
+        .girl {
+            right: 18%;
+        }
+
+        .head {
+            position: absolute;
+            top: 0;
+            left: 20px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #e8a47d;
+            z-index: 3;
+        }
+
+        .hair {
+            position: absolute;
+            top: -4px;
+            left: 15px;
+            width: 52px;
+            height: 28px;
+            border-radius: 50% 50% 30% 30%;
+            background: #321e2b;
+            z-index: 4;
+        }
+
+        .body {
+            position: absolute;
+            top: 42px;
+            left: 15px;
+            width: 50px;
+            height: 67px;
+            border-radius: 18px 18px 8px 8px;
+            background: #35618a;
+        }
+
+        .girl .body {
+            background: #b94b76;
+        }
+
+        .arm {
+            position: absolute;
+            top: 52px;
+            width: 13px;
+            height: 65px;
+            border-radius: 20px;
+            background: #e8a47d;
+            transform-origin: top center;
+            z-index: 2;
+        }
+
+        .arm.left {
+            left: 8px;
+            transform: rotate(14deg);
+        }
+
+        .arm.right {
+            right: 8px;
+            transform: rotate(-14deg);
+        }
+
+        .leg {
+            position: absolute;
+            top: 102px;
+            width: 15px;
+            height: 62px;
+            border-radius: 20px;
+            background: #20243d;
+            transform-origin: top center;
+        }
+
+        .leg.left {
+            left: 23px;
+        }
+
+        .leg.right {
+            left: 43px;
+        }
+
+        .shoe {
+            position: absolute;
+            bottom: -5px;
+            width: 32px;
+            height: 13px;
+            border-radius: 12px;
+            background: #11111d;
+        }
+
+        .leg.left .shoe {
+            left: -13px;
+        }
+
+        .leg.right .shoe {
+            left: -4px;
+        }
+
+        .heart {
+            position: absolute;
+            left: 50%;
+            top: 25%;
+            font-size: 36px;
+            opacity: 0;
+            filter: drop-shadow(0 0 10px #ffaccd);
+        }
+
+        .title {
+            position: absolute;
+            top: 8%;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: clamp(22px, 5vw, 45px);
+            opacity: 0;
+            text-shadow: 0 0 15px #ffb5d1;
+        }
+
+        .start-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 0;
+            padding: 14px 30px;
+            border-radius: 30px;
+            color: white;
+            background: #d94c83;
+            font-size: 17px;
+            cursor: pointer;
+            box-shadow: 0 0 20px #d94c83;
+            z-index: 20;
+        }
+
+        .start-btn:hover {
+            background: #f36da1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="scene">
+        <div class="stars"></div>
+        <div class="moon"></div>
+        <div class="far-trees"></div>
+
+        <div class="camera">
+            <div class="ground"></div>
+            <div class="path"></div>
+
+            <div class="character boy">
+                <div class="hair"></div>
+                <div class="head"></div>
+                <div class="body"></div>
+                <div class="arm left"></div>
+                <div class="arm right"></div>
+                <div class="leg left">
+                    <div class="shoe"></div>
+                </div>
+                <div class="leg right">
+                    <div class="shoe"></div>
+                </div>
+            </div>
+
+            <div class="character girl">
+                <div class="hair"></div>
+                <div class="head"></div>
+                <div class="body"></div>
+                <div class="arm left"></div>
+                <div class="arm right"></div>
+                <div class="leg left">
+                    <div class="shoe"></div>
+                </div>
+                <div class="leg right">
+                    <div class="shoe"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="heart">❤</div>
+        <div class="title">وأخيرًا التقينا ❤️</div>
+
+        <button class="start-btn" onclick="startScene()">
+            تشغيل المشهد
+        </button>
+    </div>
+
+    <script>
+        function startScene() {
+            const boy = document.querySelector(".boy");
+            const girl = document.querySelector(".girl");
+            const camera = document.querySelector(".camera");
+            const boyLegs = document.querySelectorAll(".boy .leg");
+            const boyArms = document.querySelectorAll(".boy .arm");
+            const girlArms = document.querySelectorAll(".girl .arm");
+            const heart = document.querySelector(".heart");
+            const title = document.querySelector(".title");
+            const button = document.querySelector(".start-btn");
+
+            gsap.killTweensOf("*");
+
+            gsap.set(boy, {
+                x: 0,
+                scale: 0.65,
+                rotation: 0
+            });
+
+            gsap.set(girl, {
+                x: 0,
+                scale: 0.65,
+                rotation: 0
+            });
+
+            gsap.set(camera, {
+                scale: 1,
+                x: 0
+            });
+
+            gsap.set(heart, {
+                scale: 0,
+                opacity: 0,
+                xPercent: -50
+            });
+
+            gsap.set(title, {
+                opacity: 0
+            });
+
+            gsap.to(button, {
+                opacity: 0,
+                duration: 0.4
+            });
+
+            const walking = gsap.timeline({
+                repeat: -1,
+                paused: true
+            });
+
+            walking
+                .to(boyLegs[0], {
+                    rotation: 28,
+                    duration: 0.25,
+                    ease: "sine.inOut"
+                }, 0)
+                .to(boyLegs[1], {
+                    rotation: -28,
+                    duration: 0.25,
+                    ease: "sine.inOut"
+                }, 0)
+                .to(boyLegs[0], {
+                    rotation: -28,
+                    duration: 0.25,
+                    ease: "sine.inOut"
+                }, 0.25)
+                .to(boyLegs[1], {
+                    rotation: 28,
+                    duration: 0.25,
+                    ease: "sine.inOut"
+                }, 0.25)
+                .to(boyArms[0], {
+                    rotation: -25,
+                    duration: 0.25,
+                    ease: "sine.inOut"
+                }, 0)
+                .to(boyArms[1], {
+                    rotation: 25,
+                    duration: 0.25,
+                    ease: "sine.inOut"
+                }, 0)
+                .to(boyArms[0], {
+                    rotation: 25,
+                    duration: 0.25,
+                    ease: "sine.inOut"
+                }, 0.25)
+                .to(boyArms[1], {
+                    rotation: -25,
+                    duration: 0.25,
+                    ease: "sine.inOut"
+                }, 0.25);
+
+            const scene = gsap.timeline({
+                defaults: {
+                    ease: "power2.inOut"
+                }
+            });
+
+            scene
+                .to(boy, {
+                    x: 150,
+                    duration: 1.8,
+                    ease: "none",
+                    onStart: () => walking.play()
+                })
+                .to(boy, {
+                    x: 205,
+                    duration: 0.7,
+                    ease: "power2.out",
+                    onComplete: () => walking.pause()
+                })
+                .to(boy, {
+                    y: -8,
+                    duration: 0.15,
+                    yoyo: true,
+                    repeat: 1
+                })
+                .to(camera, {
+                    scale: 1.35,
+                    duration: 2.2,
+                    ease: "power2.inOut"
+                })
+                .to(boy, {
+                    x: 290,
+                    duration: 2.2,
+                    ease: "power1.inOut"
+                }, "<")
+                .to(girl, {
+                    x: -75,
+                    duration: 2.2,
+                    ease: "power1.inOut"
+                }, "<")
+                .to(boy, {
+                    y: -13,
+                    duration: 0.18,
+                    yoyo: true,
+                    repeat: 3,
+                    ease: "sine.inOut"
+                })
+                .to(girlArms[0], {
+                    rotation: -55,
+                    duration: 0.35
+                }, "<")
+                .to(girlArms[1], {
+                    rotation: 55,
+                    duration: 0.35
+                }, "<")
+                .to(boyArms[0], {
+                    rotation: -65,
+                    duration: 0.35
+                }, "<")
+                .to(boyArms[1], {
+                    rotation: 65,
+                    duration: 0.35
+                }, "<")
+                .to(boy, {
+                    scale: 0.78,
+                    y: -25,
+                    duration: 0.45,
+                    ease: "power2.out"
+                })
+                .to(girl, {
+                    scale: 0.78,
+                    y: -25,
+                    duration: 0.45,
+                    ease: "power2.out"
+                }, "<")
+                .to(boy, {
+                    x: 335,
+                    duration: 0.6,
+                    ease: "power2.inOut"
+                })
+                .to(girl, {
+                    x: -120,
+                    duration: 0.6,
+                    ease: "power2.inOut"
+                }, "<")
+                .to(boy, {
+                    rotation: -5,
+                    duration: 0.18,
+                    yoyo: true,
+                    repeat: 1
+                })
+                .to(girl, {
+                    rotation: 5,
+                    duration: 0.18,
+                    yoyo: true,
+                    repeat: 1
+                }, "<")
+                .to(heart, {
+                    scale: 1.8,
+                    opacity: 1,
+                    duration: 0.7,
+                    ease: "back.out(2)"
+                })
+                .to(heart, {
+                    y: -110,
+                    opacity: 0,
+                    duration: 1.5,
+                    ease: "power1.out"
+                })
+                .to(title, {
+                    opacity: 1,
+                    duration: 1
+                });
+        }
+    </script>
+
+</body>
+</html>
